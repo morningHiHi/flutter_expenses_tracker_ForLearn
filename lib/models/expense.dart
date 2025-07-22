@@ -8,7 +8,7 @@ const Uuid uuid = Uuid();
 
 enum Category { food, travel, leisure, work }
 
-const Map<Category,Object> categoryIcons = {
+const Map<Enum,IconData> categoryIcons = {
   Category.food : Icons.lunch_dining,
   Category.travel : Icons.flight_takeoff,
   Category.leisure: Icons.movie,
