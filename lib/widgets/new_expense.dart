@@ -13,6 +13,12 @@ class _NewExpenseState extends State<NewExpense> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
 
+  void _presentDatePicker(){
+    final DateTime now = DateTime.now();
+    DateTime firstTime = DateTime(now.year-1,now.month,now.day);
+    showDatePicker(context: context, initialDate: now,firstDate: firstTime, lastDate: now);
+  }
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -30,18 +36,40 @@ class _NewExpenseState extends State<NewExpense> {
             maxLength: 50,
             decoration: InputDecoration(label: Text('Titile')),
           ),
-          TextField(
-            keyboardType: TextInputType.number,
-            controller: _amountController,
-            maxLength: 50,
-            decoration: InputDecoration(
-              prefix: Text('\$ '),
-              label: Text('amount'),
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  controller: _amountController,
+                  maxLength: 50,
+                  decoration: InputDecoration(
+                    prefix: Text('\$ '),
+                    label: Text('amount'),
+                  ),
+                ),
+              ),
+              SizedBox(width: 20,),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('Selected Date'),
+                    IconButton(onPressed: _presentDatePicker, icon: Icon(Icons.date_range_outlined))
+                  ],
+                ),
+              ),
+            ],
           ),
           Row(
             children: [
-              TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('cancel')),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('cancel'),
+              ),
               ElevatedButton(
                 onPressed: () {
                   print(_titleController.text);
