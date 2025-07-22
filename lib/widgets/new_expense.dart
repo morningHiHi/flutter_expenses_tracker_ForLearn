@@ -36,12 +36,12 @@ class _NewExpenseState extends State<NewExpense> {
             maxLength: 50,
             decoration: InputDecoration(
               prefix: Text('\$ '),
-              label: Text('Titile'),
+              label: Text('amount'),
             ),
           ),
           Row(
             children: [
-              TextButton(onPressed: (){}, child: const Text('cancel')),
+              TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('cancel')),
               ElevatedButton(
                 onPressed: () {
                   print(_titleController.text);
