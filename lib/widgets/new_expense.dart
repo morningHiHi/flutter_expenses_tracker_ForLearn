@@ -66,7 +66,11 @@ class _NewExpenseState extends State<NewExpense> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(_selectedDate == null ? 'No date selected':formatter.format(_selectedDate!)),
+                    Text(
+                      _selectedDate == null
+                          ? 'No date selected'
+                          : formatter.format(_selectedDate!),
+                    ),
                     IconButton(
                       onPressed: _presentDatePicker,
                       icon: Icon(Icons.date_range_outlined),
@@ -78,6 +82,19 @@ class _NewExpenseState extends State<NewExpense> {
           ),
           Row(
             children: [
+              DropdownButton(
+                items: Category.values
+                    .map(
+                      (category) => DropdownMenuItem(
+                        value: category, //dòng này quan trọng không có thì widget lỗi UI
+                        child: Text(category.name.toString()),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  print(value);
+                },
+              ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
