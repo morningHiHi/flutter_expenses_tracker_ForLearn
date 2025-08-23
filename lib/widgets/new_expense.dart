@@ -24,11 +24,24 @@ class _NewExpenseState extends State<NewExpense> {
       initialDate: now,
       firstDate: firstTime,
       lastDate: now,
+      //barrierColor: Colors.blueAccent
     );
 
     setState(() {
       _selectedDate = pickedDate;
     });
+  }
+
+  void _submitExpenseData() {
+    final enteredAmount = double.tryParse(_amountController.text);
+    final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
+    if (_titleController.text.trim().isEmpty ||
+        amountIsInvalid ||
+        _selectedDate == null) {
+          showDialog(context: context, builder:(ctx)=> AlertDialog(title: Text('Invalid input'),content: const Text('please make sure a valid title, amount, date and category was entered'),actions: [
+            TextButton(onPressed: (){Navigator.pop(ctx);}, child: Text('okay'))
+          ],));
+        }
   }
 
   @override
@@ -81,6 +94,7 @@ class _NewExpenseState extends State<NewExpense> {
               ),
             ],
           ),
+          SizedBox(height: 16),
           Row(
             children: [
               DropdownButton(
@@ -88,13 +102,14 @@ class _NewExpenseState extends State<NewExpense> {
                 items: Category.values
                     .map(
                       (category) => DropdownMenuItem(
-                        value: category, //dòng này quan trọng không có thì widget lỗi UI
+                        value:
+                            category, //dòng này quan trọng không có thì widget lỗi UI
                         child: Text(category.name.toString()),
                       ),
                     )
                     .toList(),
                 onChanged: (value) {
-                  if(value == null){
+                  if (value == null) {
                     return;
                   }
                   setState(() {
@@ -111,8 +126,7 @@ class _NewExpenseState extends State<NewExpense> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  print(_titleController.text);
-                  print(_amountController.text);
+                  _submitExpenseData();
                 },
                 child: const Text('Save Expense'),
               ),
