@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class NewExpense extends StatefulWidget {
-  NewExpense({super.key});
+  const NewExpense({super.key, required this.onAddExpense});
+
+  final void Function(Expense expense) onAddExpense;
+
   @override
   State<StatefulWidget> createState() {
     return _NewExpenseState();
@@ -38,10 +41,34 @@ class _NewExpenseState extends State<NewExpense> {
     if (_titleController.text.trim().isEmpty ||
         amountIsInvalid ||
         _selectedDate == null) {
-          showDialog(context: context, builder:(ctx)=> AlertDialog(title: Text('Invalid input'),content: const Text('please make sure a valid title, amount, date and category was entered'),actions: [
-            TextButton(onPressed: (){Navigator.pop(ctx);}, child: Text('okay'))
-          ],));
-        }
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Invalid input'),
+          content: const Text(
+            'please make sure a valid title, amount, date and category was entered',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: Text('okay'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+    widget.onAddExpense(
+      Expense(
+        title: _titleController.text,
+        amount: enteredAmount,
+        date: _selectedDate!,
+        category: _selectedCategory,
+      ),
+    );
+    Navigator.pop(context);
   }
 
   @override
@@ -53,7 +80,7 @@ class _NewExpenseState extends State<NewExpense> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.fromLTRB(16,48,16,16),
       child: Column(
         children: [
           TextField(
